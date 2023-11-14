@@ -73,42 +73,28 @@ public class SamlUtils {
     //IdP的证书公钥，用于在验证SamlResponse签名，这个公钥可以从idp-metadata文件中获取到
     private String idpPublicKeyPath = "c:\\cert\\keycloak.pem";
     //IdP的endpoint，比如登录、退出的时候请求用的URL，这个URL可以从idp-metadata文件中获取到
-    //private String idpDestinationUrl = "http://localhost:8080/realms/TestRealm/protocol/saml";
-    private String idpDestinationUrl = "https://my-keycloak.org:8443/realms/TestRealm/protocol/saml";
+    private String idpDestinationUrl = "http://localhost:8080/realms/TestRealm/protocol/saml";
     private Credential spCredential;
     private BasicX509Credential idpBasicX509Credential;
     private static RandomIdentifierGenerationStrategy secureRandomIdGenerator = new RandomIdentifierGenerationStrategy();
-
-    //是否对请求进行签名
-    //是，将会初始化SP证书，并使用SP私钥进行签名。URL示例：https://idp-endpoint?SAMLRequest=XXX&RelayState=XXX&SigAlg=xxx&Signature=XXX
-    //否，将不会对请求进行签名。URL示例：https://idp-endpoint?SAMLRequest=XXX&RelayState=XXX
-    private boolean signSamlRequest = true;
-
-    //是否对响应回来的response中的assertion进行签名验证
-    private boolean verifySamlResponseSignature = true;
 
     public SamlUtils() throws SamlException {
         try {
             JavaCryptoValidationInitializer javaCryptoValidationInitializer = new JavaCryptoValidationInitializer();
             javaCryptoValidationInitializer.init();
-//            for (Provider jceProvider : Security.getProviders()) {
-//                logger.info(jceProvider.getInfo());
-//            }
+            for (Provider jceProvider : Security.getProviders()) {
+                logger.info(jceProvider.getInfo());
+            }
             InitializationService.initialize();
-
-            if (signSamlRequest) {
-                initSpCredential();
-            }
-
-            if (verifySamlResponseSignature) {
-                initIdpCredential();
-            }
-
+            initSpCredential();
+            initIdpCredential();
         } catch (Exception e) {
             throw new SamlException("Saml util initialization failed.", e);
         }
     }
 
+    //签名URL：https://idp-endpoint?SAMLRequest=XXX&RelayState=XXX&SigAlg=xxx&Signature=XXX
+    //不签名URL：https://idp-endpoint?SAMLRequest=XXX&RelayState=XXX
     public String getRedirectUrl(HttpServletResponse httpServletResponse, String relayState) throws SamlException {
         try {
             return buildRedirectUrl(httpServletResponse, relayState);
