@@ -111,13 +111,20 @@ public class SamlUtils {
             throw new SamlException("SAML response decode failed");
         }
 
+        //Status
         Status responseStatus = response.getStatus();
         if (responseStatus == null || !StatusCode.SUCCESS.equals(responseStatus.getStatusCode().getValue())) {
             throw new SamlException("SAML response status is invalid");
         }
 
+        //Assertions
         Assertion assertion = response.getAssertions().get(0);
+
+        //Assertions - Signature
         verifyAssertionSignature(assertion);
+
+        //Assertions - Conditions
+        //also can verify Conditions
 
         return assertion.getSubject().getNameID().getValue();
     }
