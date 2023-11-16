@@ -61,22 +61,22 @@ public class SamlUtils {
     private static final Logger logger = LogManager.getLogger(SamlUtils.class);
 
     //SP keystore位置
-    private String keyStorePath = "c:\\cert\\sp.jks";
+    private final String keyStorePath = "c:\\cert\\sp.jks";
     //SP keystore密码
-    private String keyStorePassword = "sp";
+    private final String keyStorePassword = "sp";
     //SP 私钥Id
-    private String keyEntryId = "sp";
+    private final String keyEntryId = "sp";
     //SP 私钥密码
-    private String keyPassword = "sp";
+    private final String keyPassword = "sp";
     // SP client ID
-    private String spEntityId = "my_client";
+    private final String spEntityId = "my_client";
     //IdP的证书公钥，用于在验证SamlResponse签名，这个公钥可以从idp-metadata文件中获取到
-    private String idpPublicKeyPath = "c:\\cert\\keycloak.pem";
+    private final String idpPublicKeyPath = "c:\\cert\\keycloak.pem";
     //IdP的endpoint，比如登录、退出的时候请求用的URL，这个URL可以从idp-metadata文件中获取到
-    private String idpDestinationUrl = "http://localhost:8080/realms/TestRealm/protocol/saml";
+    private final String idpDestinationUrl = "http://localhost:8080/realms/TestRealm/protocol/saml";
     private Credential spCredential;
     private BasicX509Credential idpBasicX509Credential;
-    private static RandomIdentifierGenerationStrategy secureRandomIdGenerator = new RandomIdentifierGenerationStrategy();
+    private static final RandomIdentifierGenerationStrategy secureRandomIdGenerator = new RandomIdentifierGenerationStrategy();
 
     public SamlUtils() throws SamlException {
         try {
