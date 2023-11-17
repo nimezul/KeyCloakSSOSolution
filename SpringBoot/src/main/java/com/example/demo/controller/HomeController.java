@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping(value = "home")
 public class HomeController {
-    @GetMapping(value = "index")
+    @GetMapping(value = "health")
     public String index() {
 
-        return "Welcome!";
+        return ":)";
     }
 
     @GetMapping(value = "resource")
@@ -23,12 +23,12 @@ public class HomeController {
             return "Your token is null.";
         }
 
-        JwtUtils jwt = new JwtUtils();
-        if (jwt.isTokenExpired(token)) {
-            return "Your token is expired.";
+        try {
+            JwtUtils jwt = new JwtUtils();
+            String userName = jwt.getUserNameFromToken(token);
+            return "You can access resource," + userName;
+        } catch (Exception e) {
+            return "Your token is invalid:" + e.getMessage();
         }
-
-        String userName = jwt.getUserNameFromToken(token);
-        return "You can access resource," + userName;
     }
 }

@@ -30,17 +30,8 @@ public class JwtUtils {
     }
 
     public String getUserNameFromToken(String token) {
-        Claims claims = getClaimsFromToken(token);
-        return null != claims ? claims.getSubject() : null;
-    }
 
-    public Boolean isTokenExpired(String token) {
-        Claims claims = getClaimsFromToken(token);
-        return null == claims || claims.getExpiration().before(new Date());
-    }
-
-    private Claims getClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(getSignKey()).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(getSignKey()).parseClaimsJws(token).getBody().getSubject();
     }
 
     private PrivateKey getSignKey() {
