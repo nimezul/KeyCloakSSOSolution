@@ -17,8 +17,8 @@ public class HomeController {
     }
 
     @GetMapping(value = "resource")
-    public String resource(HttpServletRequest httpRequest, String token) {
-        //String token = httpRequest.getHeader("Authorization");
+    public String resource(HttpServletRequest httpRequest) {
+        String token = httpRequest.getHeader("Authorization");
         if (null == token) {
             return "Your token is null.";
         }
