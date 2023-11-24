@@ -31,22 +31,22 @@
 
 ## 启动测试环境
 切到bin目录，运行```kc.bat start-dev```  
-![keycloak-start](.\asserts\keycloak-start.png)
+![keycloak-start](/asserts/keycloak-start.png)
 
 浏览器访问：```http://localhost:8080```  
-![keycloak-browser](.\asserts\keycloak-browser.png)
+![keycloak-browser](/asserts/keycloak-browser.png)
 
 创建管理员，并登录系统  
-![keycloak-login](.\asserts\keycloak-login.png)
+![keycloak-login](/asserts/keycloak-login.png)
 
 参考：https://www.keycloak.org/getting-started/getting-started-zip
 
 ## 配置生产环境[可选]
 通过```kc.bat start-dev```启动的dev环境，默认支持HTTP，而且数据库会默认生成到项目文件夹中  
-![keycloak-h2](.\asserts\keycloak-h2.png)
+![keycloak-h2](/asserts/keycloak-h2.png)
 
 而生产环境模式，我们会配置HTTPS证书和数据库，我们在这个文件中添加配置项  
-  ![keycloak-conf](.\asserts\keycloak-conf.png)
+  ![keycloak-conf](/asserts/keycloak-conf.png)
 
 修改配置后，需要先运行```kc.bat build```，然后再运行```kc.bat start```
 
@@ -55,41 +55,41 @@
 
 # 2. SSO Server中配置SAML client信息
 ## 新建Realm
-![keycloak-realm](.\asserts\keycloak-realm.png)  
+![keycloak-realm](/asserts/keycloak-realm.png)  
 
-![keycloak-new-realm](.\asserts\keycloak-new-realm.png)
+![keycloak-new-realm](/asserts/keycloak-new-realm.png)
 
 
 
 ## 新建Client
-![keycloak-new-client-1](.\asserts\keycloak-new-client-1.png)  
+![keycloak-new-client-1](/asserts/keycloak-new-client-1.png)  
 
-![keycloak-new-client-2](.\asserts\keycloak-new-client-2.png)
+![keycloak-new-client-2](/asserts/keycloak-new-client-2.png)
 
 ## 配置Client
 Client ID 必填，这自然不用说。  
 Valid redirect URIs 相当于一个跳转白名单，支持通配符。比如SSO登录成功后我们要跳转回我们的APP，这个地址起码要加在这里，否则到时候就会出错说是url错误之类的。  
-![keycloak-set-client-1](.\asserts\keycloak-set-client-1.png)
+![keycloak-set-client-1](/asserts/keycloak-set-client-1.png)
 
 继续向下翻，Master SAML Processing URL就是你APP的回调URL  
 Force POST binding 打开表示， IdP回调的时候是通过HTTP POST方法，请求你的回调地址  
-![keycloak-set-client-2](.\asserts\keycloak-set-client-2.png)
+![keycloak-set-client-2](/asserts/keycloak-set-client-2.png)
 
 继续向下翻，该部分表示， IdP响应回去的SAMLRequest中的Assertion是有签名的，客户端可以验证签名  
-![keycloak-set-client-3](.\asserts\keycloak-set-client-3.png)
+![keycloak-set-client-3](/asserts/keycloak-set-client-3.png)
 
 以下配置表示，客户端在发送SAMLRequest的时候，会对请求参数进行签名，服务端会验证签名的
-![keycloak-set-client-4](.\asserts\keycloak-set-client-4.png)
+![keycloak-set-client-4](/asserts/keycloak-set-client-4.png)
 
 # 3. SAML Client 的原理
-![saml](.\asserts\saml.png)
+![saml](/asserts/saml.png)
 双发要通信，我们得知道一些信息，比如客户端发请求发到哪里？服务端响应到哪里？  
 客户端和服务端在验证签名的时候，需要对方的公钥    
 服务端肯定知道客户端的信息，因为上面我们配置了Client。  
 那服务端也得给客户端它的信息，比如IdP URL 和 公钥证书。这个在这里找：  
-![idp-metadata](.\asserts\idp-metadata.png)
+![idp-metadata](/asserts/idp-metadata.png)
 点击之后其实是一个XML，我们从中可以找到刚才提到的信息  
-![idp-metadata-xml](.\asserts\idp-metadata-xml.png)
+![idp-metadata-xml](/asserts/idp-metadata-xml.png)
 
 # 4. SAML 协议
 既然是基于SAML协议，那多少需要了解一下SAML。  
